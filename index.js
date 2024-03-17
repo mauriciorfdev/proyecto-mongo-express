@@ -1,5 +1,5 @@
 require('dotenv').config()
-const client = require('./src/dbconnect')
+const client = require('./dbconnect')
 const express = require('express')
 const app = express()
 
