@@ -1,7 +1,7 @@
-require('dotenv').config()
-const client = require('./dbconnect')
-const express = require('express')
-const app = express()
+require('dotenv').config();
+const client = require('./src/dbconnect');
+const express = require('express');
+const app = express();
 
 
 //body parser middleware
