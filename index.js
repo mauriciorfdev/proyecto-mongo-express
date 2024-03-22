@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { ObjectId } = require('mongodb');
 const client = require('./src/dbconnect');
 const express = require('express');
 const app = express();
@@ -19,6 +20,22 @@ app.get('/', async (req, res)=>{
         console.table(data);
     }
     finally{
+    }
+})
+
+//GET A SINGLE USER
+app.get('/single', async (req, res)=>{
+    try {
+        client.connect()
+        const db = client.db('persons')
+        const collection = db.collection('customers')
+        const query = new ObjectId('65f218700b32a0e60f2aa42b')
+        const found = await collection.findOne(query)
+        found ? res.send(found) : res.send({msg:'NOT FOUND!'})
+        console.log(found);
+    }
+    catch(e){
+        console.log(e);
     }
 })
 
