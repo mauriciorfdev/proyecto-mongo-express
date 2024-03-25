@@ -29,7 +29,7 @@ app.get('/single', async (req, res)=>{
         client.connect()
         const db = client.db('persons')
         const collection = db.collection('customers')
-        const query = new ObjectId('65f218700b32a0e60f2aa42b')
+        const query = new ObjectId('65f218700b32a0e60f2aa42b') //id=1
         const found = await collection.findOne(query)
         found ? res.send(found) : res.send({msg:'NOT FOUND!'})
         console.log(found);
@@ -56,6 +56,29 @@ app.post('/', async (req, res)=>{
 
     }
     catch(e){
+        console.log(e);
+    }
+})
+
+//DELETE A CUSTOMER
+app.delete('/:id', async (req, res)=>{
+    try {
+        const id = (req.params.id);
+        if( !ObjectId.isValid(id) ){
+            return res.send({msg:'ID NO VALIDO !'});
+        }
+
+        client.connect();
+        const query = {_id: new ObjectId(id)};
+        const coll = client.db('persons').collection('customers');
+        result = await coll.findOne(query);
+        
+        if(result){//delete one...
+            return res.json(result);
+        }else{
+            return res.json({msg:'NOT FOUND - (ID OK)'});
+        }
+    } catch (e) {
         console.log(e);
     }
 })
