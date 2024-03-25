@@ -74,7 +74,8 @@ app.delete('/:id', async (req, res)=>{
         result = await coll.findOne(query);
         
         if(result){//delete one...
-            return res.json(result);
+            deleted = await coll.deleteOne(result)
+            return res.json(deleted); 
         }else{
             return res.json({msg:'NOT FOUND - (ID OK)'});
         }
@@ -84,4 +85,4 @@ app.delete('/:id', async (req, res)=>{
 })
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log('server listen on port ... ', PORT) );
+app.listen(PORT, () => console.log('server listen on port ... ', PORT) )
