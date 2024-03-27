@@ -23,18 +23,32 @@ app.get('/', async (req, res)=>{
     }
 })
 
-//GET A SINGLE USER
+//GET A SINGLE USER (BY OBJECT ID)
 app.get('/single', async (req, res)=>{
     try {
         client.connect()
         const db = client.db('persons')
         const collection = db.collection('customers')
-        const query = new ObjectId('65f218700b32a0e60f2aa42b') //id=1
+        const query = new ObjectId('6600d22e130d748a849e275c') //id=1
         const found = await collection.findOne(query)
         found ? res.send(found) : res.send({msg:'NOT FOUND!'})
         console.log(found);
     }
     catch(e){
+        console.log(e);
+    }
+})
+//GET A USER BY ID
+app.get('/:id', async (req, res)=>{
+    try {
+        const id = parseInt(req.params.id)
+        client.connect();
+        const db = client.db('persons');
+        const collection = db.collection('customers');
+        const query = {id: id};
+        const found = await collection.findOne(query);
+        found ? res.send(found) : res.send({msg:`NO USER WITH ID: ${id}`})
+    } catch(e){
         console.log(e);
     }
 })
