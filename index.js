@@ -19,7 +19,8 @@ app.get('/', async (req, res)=>{
         res.send(data)
         console.table(data);
     }
-    finally{
+    catch(e){
+        console.log(e);
     }
 })
 
