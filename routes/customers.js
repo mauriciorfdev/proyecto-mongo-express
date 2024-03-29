@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { ObjectId } = require('mongodb');
 const client = require('../src/dbconnect');
 
 //GET ALL CUSTOMERS
@@ -31,6 +32,29 @@ router.get('/:id', async (req, res)=>{
     } 
     catch (e) {
         console.log(e);    
+    }
+})
+
+//GET A CUSTOMER BY OBJECT ID
+router.get('/objectId/:id', async (req, res)=>{
+    try {
+        const id = req.params.id;
+        if( !ObjectId.isValid(id) ){
+            return res.send({msg: 'ID NO VÁLIDO !'})
+        }
+
+        client.connect()
+        const customers = client.db('persons').collection('customers')
+        const query = {_id: new ObjectId(id)}
+        const found = await customers.findOne(query)
+        if (found){
+            return res.send(found)
+        }else{
+            return res.send({msg: `NO USER WITH ID ${req.params.id}`})
+        }
+    } 
+    catch (e) {
+        console.log(e);
     }
 })
 

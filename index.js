@@ -10,24 +10,10 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+
 //GET ALL CUSTOMERS FROM DB USING ROUTER 
 app.use('/api', router)
 
-//GET A SINGLE USER (BY OBJECT ID)
-app.get('/single', async (req, res)=>{
-    try {
-        client.connect()
-        const db = client.db('persons')
-        const collection = db.collection('customers')
-        const query = new ObjectId('6600d22e130d748a849e275c') //id=1
-        const found = await collection.findOne(query)
-        found ? res.send(found) : res.send({msg:'NOT FOUND!'})
-        console.log(found);
-    }
-    catch(e){
-        console.log(e);
-    }
-})
 
 //INSERT A CUSTOMER
 app.post('/', async (req, res)=>{
