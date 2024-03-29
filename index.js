@@ -12,7 +12,7 @@ app.use(express.urlencoded({extended: false}))
 
 
 //GET ALL CUSTOMERS FROM DB USING ROUTER 
-app.use('/api', router)
+app.use('/customers', router)
 
 
 //INSERT A CUSTOMER

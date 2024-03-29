@@ -17,7 +17,7 @@ router.get('/', async(req, res)=>{
 } )
 
 //GET A CUSTOMER BY ID
-router.get('/:id', async (req, res)=>{
+router.get('/id/:id', async (req, res)=>{
     try {
         const id = parseInt(req.params.id)
         client.connect()
