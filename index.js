@@ -2,6 +2,7 @@ require('dotenv').config();
 const { ObjectId } = require('mongodb');
 const client = require('./src/dbconnect');
 const express = require('express');
+const router = require('./routes/customers')
 const app = express();
 
 
@@ -16,13 +17,15 @@ app.get('/', async (req, res)=>{
         const db = client.db('persons')
         const customers = db.collection('customers')
         const data = await customers.find().toArray();
-        res.send(data)
+        res.send(data) 
         console.table(data);
     }
     catch(e){
         console.log(e);
     }
 })
+//GET ALL CUSTOMERS FROM DB USING ROUTER 
+app.use('/get', router)//localhost:3000/get/testGet
 
 //GET A SINGLE USER (BY OBJECT ID)
 app.get('/single', async (req, res)=>{
