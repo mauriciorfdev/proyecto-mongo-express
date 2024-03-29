@@ -10,22 +10,8 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
-//GET ALL CUSTOMERS
-app.get('/', async (req, res)=>{
-    try{
-        client.connect()
-        const db = client.db('persons')
-        const customers = db.collection('customers')
-        const data = await customers.find().toArray();
-        res.send(data) 
-        console.table(data);
-    }
-    catch(e){
-        console.log(e);
-    }
-})
 //GET ALL CUSTOMERS FROM DB USING ROUTER 
-app.use('/get', router)//localhost:3000/get/testGet
+app.use('/api', router)
 
 //GET A SINGLE USER (BY OBJECT ID)
 app.get('/single', async (req, res)=>{
@@ -39,20 +25,6 @@ app.get('/single', async (req, res)=>{
         console.log(found);
     }
     catch(e){
-        console.log(e);
-    }
-})
-//GET A USER BY ID
-app.get('/:id', async (req, res)=>{
-    try {
-        const id = parseInt(req.params.id)
-        client.connect();
-        const db = client.db('persons');
-        const collection = db.collection('customers');
-        const query = {id: id};
-        const found = await collection.findOne(query);
-        found ? res.send(found) : res.send({msg:`NO USER WITH ID: ${id}`})
-    } catch(e){
         console.log(e);
     }
 })
