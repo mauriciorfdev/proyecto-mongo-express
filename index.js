@@ -15,22 +15,5 @@ app.use(express.urlencoded({extended: false}))
 app.use('/customers', router)
 
 
-//UPDATE A CUSTOMER
-app.patch('/:id', async(req, res)=>{
-    try {
-        client.connect();
-        const coll = client.db('persons').collection('customers')
-        const query = {id: parseInt(req.params.id)}
-        const updatedData = {$set: req.body}
-        await coll.updateOne(query, updatedData)
-        const x = await coll.find().toArray()
-        res.json(x)
-    } catch (e) {
-        console.log(e);
-    }
-})
-
-
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('server listen on port ... ', PORT) )

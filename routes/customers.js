@@ -108,4 +108,38 @@ router.delete('/delete/:objectId', async (req, res)=>{
 })
 
 
+//UPDATE A CUSTOMER BY OBJECT ID
+router.patch('/:objectId', async (req, res)=>{
+    try{
+        const id = req.params.objectId;
+        if( !ObjectId.isValid(id) ){
+            return res.send({msg:'ID NO VÁLIDO !'})
+        }
+        client.connect();
+        const customers = client.db('persons').collection('customers')
+        const query = {_id: new ObjectId(id)}
+        const updatedData = {
+            $set: req.body
+        }
+        const result = await customers.updateOne(query, updatedData)
+        
+        const data = await customers.find().toArray()
+        console.table(data)
+
+        if(result.matchedCount==0){
+            return res.send({msg:'NOT FOUND'})
+        }
+        else if (result.modifiedCount==1){
+            return res.send({msg: `UPDATED USER WITH ID ${id}`, })
+        }
+        else{
+            return res.send({msg: `NO USER MODIFIED`})
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+})
+
+
 module.exports = router;
