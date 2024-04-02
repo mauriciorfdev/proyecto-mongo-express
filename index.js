@@ -15,31 +15,6 @@ app.use(express.urlencoded({extended: false}))
 app.use('/customers', router)
 
 
-//DELETE A CUSTOMER
-app.delete('/:id', async (req, res)=>{
-    try {
-        const id = (req.params.id);
-        if( !ObjectId.isValid(id) ){
-            return res.send({msg:'ID NO VALIDO !'});
-        }
-
-        client.connect();
-        const query = {_id: new ObjectId(id)};
-        const coll = client.db('persons').collection('customers');
-        result = await coll.findOne(query);
-        
-        if(result){//delete one...
-            deleted = await coll.deleteOne(result)
-            return res.json(deleted); 
-        }else{
-            return res.json({msg:'NOT FOUND - (ID OK)'});
-        }
-    } catch (e) {
-        console.log(e);
-    }
-})
-
-
 //UPDATE A CUSTOMER
 app.patch('/:id', async(req, res)=>{
     try {

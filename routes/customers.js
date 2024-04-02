@@ -79,5 +79,33 @@ router.post('/', async (req, res)=>{
 })
 
 
+//DELETE  A CUSTOMER BY OBJECT ID
+router.delete('/delete/:objectId', async (req, res)=>{
+    try {
+        const id = req.params.objectId;
+        if( !ObjectId.isValid(id) ){
+            return res.send({msg:'ID NO VALIDO !'});
+        }
+        client.connect()
+        const customers = client.db('persons').collection('customers')
+        const query = {_id: new ObjectId(id)}
+        const result = await customers.deleteOne(query)
+        
+        const data = await customers.find().toArray()
+        console.table(data)
+        
+        if(result.deletedCount==1) {
+            console.log('Deleted...');
+            return res.send({msg:`DELETED USER WITH ${id}`})
+        }
+        else{
+            return res.send({msg: `NOT FOUND`})
+        }
+    } 
+    catch (e) {
+        console.log(e);    
+    }
+})
+
 
 module.exports = router;
