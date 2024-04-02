@@ -59,5 +59,25 @@ router.get('/objectId/:id', async (req, res)=>{
 })
 
 
+//INSERT A CUSTOMER
+router.post('/', async (req, res)=>{
+    try {
+        client.connect()
+        const customers = client.db('persons').collection('customers')
+        const newCustomer = {
+            name: req.body.name,
+            email: req.body.email    
+        }
+        const result = await customers.insertOne(newCustomer)
+        res.send(result)
+        const data = await customers.find().toArray()
+        console.table(data)
+    }
+    catch (e) {
+        console.log(e);
+    }
+})
+
+
 
 module.exports = router;

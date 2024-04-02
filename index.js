@@ -15,27 +15,6 @@ app.use(express.urlencoded({extended: false}))
 app.use('/customers', router)
 
 
-//INSERT A CUSTOMER
-app.post('/', async (req, res)=>{
-    try{
-        client.connect()
-        const db = client.db('persons')
-        const collection = db.collection('customers')
-        const newCustomer = {
-            name: req.body.name,
-            email: req.body.email,
-        }
-        const result = await collection.insertOne(newCustomer);
-        const data = await collection.find().toArray();
-        res.send(result)
-        console.table(data)
-
-    }
-    catch(e){
-        console.log(e);
-    }
-})
-
 //DELETE A CUSTOMER
 app.delete('/:id', async (req, res)=>{
     try {
